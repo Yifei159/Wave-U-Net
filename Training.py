@@ -15,7 +15,7 @@ from tqdm import tqdm  # adding the bar
 import functools
 from tensorflow.contrib.signal.python.ops import window_ops
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # canceling unnecessary log output
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 ex = Experiment('Waveunet Training', ingredients=[config_ingredient])
 
@@ -33,11 +33,11 @@ def train(model_config, experiment_id, load_model=None):
     else:
         raise NotImplementedError
 
-    # ✅ 方法 1：用 get_padding() 计算 input/output shape
+    # calculate input/output shape with get_padding()
     disc_input_shape = [model_config["batch_size"], model_config["num_frames"], 0]
     sep_input_shape, sep_output_shape = separator_class.get_padding(np.array(disc_input_shape))
 
-    # 传递给数据集
+    # put into dataset
     dataset = Datasets.get_dataset(model_config, sep_input_shape, sep_output_shape, partition="train")
     iterator = dataset.make_one_shot_iterator()
     batch = iterator.get_next()
